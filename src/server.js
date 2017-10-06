@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */ 
+
 const restify = require('restify');
 const SwaggerRestify = require('swagger-restify-mw');
 //const db = require('./config/database');
@@ -18,13 +20,11 @@ const config = {
   appRoot: __dirname,
 };
 
-console.log(app)
-
 SwaggerRestify.create(config, (err, swaggerRestify) => {
   if (err) {
     throw err;
   }
   swaggerRestify.register(app);
   app.listen(vars.port);
-  console.log('%s listening to %s', app.name, app.url);
+  console.log('%s listening to %s/api', app.name, app.url);
 });
