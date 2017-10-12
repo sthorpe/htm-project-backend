@@ -36,6 +36,23 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/Request"
+  /user:    
+    x-swagger-router-controller: user_controller
+    post:
+      description: Creates a new user if valid
+      operationId: createUser
+      parameters:
+        - name: "body"
+          in: "body"
+          description: The username of the user
+          required: true
+          schema:
+            $ref: "#/definitions/Request"          
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Request"            
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
