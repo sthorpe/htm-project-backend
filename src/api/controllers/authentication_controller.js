@@ -8,20 +8,31 @@ module.exports.authentication = function(args, res, next) {
      * Upon receiving a username and password we should check database
      * and if valid will return a token.
      **/
-    const { username, password, token } = args.query;
-    //findUser(username, password);
+
+    const { username, password } = args.query;
+
     User.getAuthenticated(username, password, function(err, user, reason) {
         if (err) throw err;
-        
+
         // login was successful if we have a user
         if (user) {
             // handle login success
+            console.log('User %s just logged in at %s', args.query.username, getDateTime());
+            const userToken = jwt.sign({ username }, 'htm-secret');
+            args.session.token = userToken;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(args.session));
             console.log('login success');
             return;
+        } else {
+            res.end('Bad login', {
+                'Content-Type': 'application/json'
+            }, 200);
+            console.log('Failed login attempt by user %s', args.query.username, getDateTime());
         }
 
         // otherwise we can determine why we failed
-        var reasons = User.failedLogin;
+        let reasons = User.failedLogin;
         switch (reason) {
             case reasons.NOT_FOUND:
             case reasons.PASSWORD_INCORRECT:
@@ -34,34 +45,6 @@ module.exports.authentication = function(args, res, next) {
                 break;
         }
     });
-    
-    // If no token create one if user's valid
-    if (false) {
-        console.log('User %s just logged in at %s', args.query.username, getDateTime());
-        
-        const { username, password, token } = args.query;
-    
-        if (token) {
-            const value = verifyToken(token);
-            console.log('Token value: %s', value);
-        }
-        
-        // user.validate? if true create token
-    
-        // Generate token
-        const signedToken = jwt.sign({ username }, 'htm-secret');
-        const userToken = { signedToken };
-    
-        res.send(userToken, {
-            'Content-Type': 'application/json'
-        }, 200);
-
-    }else{
-        res.send('Error, bad login', {
-            'Content-Type': 'application/json'
-        }, 200);
-    }
-
 };
 
 module.exports.findUser = function(args, res, next) {

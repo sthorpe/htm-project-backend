@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */ 
-var User = require('../models/users');
+const User = require('../models/users');
+let ObjectId = require('mongodb').ObjectID;
 
 module.exports.findUser = function(username, password) {
 
@@ -25,13 +26,14 @@ module.exports.createUser = function(args, res, next) {
     let username = 'sthorpe';
     let password = 'testing';
 
-    let User = new User({ // jshint ignore:line
+    let userModel = new User({ // jshint ignore:line
+        _id:  new ObjectId(),
         username,
         password
     });
     
     // save user to database
-    User.save(function(err) {
+    userModel.save(function(err) {
         if (err) throw err;
 
         // fetch user and test password verification

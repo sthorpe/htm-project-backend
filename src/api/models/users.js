@@ -2,6 +2,8 @@
 const mongoose   = require('mongoose');
 const bcrypt     = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
+const MAX_LOGIN_ATTEMPTS = 50;
+const LOCK_TIME = 2 * 60 * 60 * 1000;
 mongoose.Promise = require('bluebird');
 
 const Schema = mongoose.Schema;

@@ -7,6 +7,9 @@ const jsyaml = require('js-yaml');
 const restify = require('restify');
 const SwaggerRestify = require('swagger-restify-mw');
 const swaggerTools = require('swagger-tools');
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
+const bodyParser = require('body-parser');
 const db = require('./config/database');
 const vars = require('./config/vars');
 
@@ -19,8 +22,15 @@ var swaggerDoc = jsyaml.safeLoad(spec);
 var options = {
   swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './api/controllers'),
-  useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
 };
+
+app.use(cookieParser());
+
+app.use(cookieSession({
+  keys: ['htm-proj3ct']
+}));
+
+app.use(bodyParser.json({ type: 'application/*+json' }));
 
 // Initialize the Swagger middleware
 swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
@@ -36,7 +46,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   
     // Serve the Swagger documents and Swagger UI
     app.use(middleware.swaggerUi());
-  
+
     // Start the server
     http.createServer(app).listen(vars.port, function () {
       console.log(`%c 
