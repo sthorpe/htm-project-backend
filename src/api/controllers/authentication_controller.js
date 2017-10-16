@@ -17,12 +17,16 @@ module.exports.authentication = function(args, res, next) {
         // login was successful if we have a user
         if (user) {
             // handle login success
+            if (username === "sthorpe" || username === "dadams" || username === "bwayne" || username === "scampbell") {
+                args.session.user = username;
+                args.session.admin = true;
+            }
             console.log('User %s just logged in at %s', args.query.username, getDateTime());
             const userToken = jwt.sign({ username }, 'htm-secret');
             args.session.token = userToken;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(args.session));
-            console.log('login success');
+            console.log('login success', args.session);
             return;
         } else {
             res.end('Bad login', {
