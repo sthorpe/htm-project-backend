@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */ 
+/*jshint esversion: 6 */
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const { findUser } = require('./users_controller');
@@ -9,19 +9,21 @@ module.exports.authentication = function(args, res, next) {
      * and if valid will return a token.
      **/
 
-    const { username, password } = args.query;
+    const { username, password } = args.body;
+    console.log(args);
 
     User.getAuthenticated(username, password, function(err, user, reason) {
         if (err) throw err;
-
+        console.log(user);
         // login was successful if we have a user
         if (user) {
             // handle login success
             if (username === "sthorpe" || username === "dadams" || username === "bwayne" || username === "scampbell") {
+                args.session = {};
                 args.session.user = username;
                 args.session.admin = true;
             }
-            console.log('User %s just logged in at %s', args.query.username, getDateTime());
+            console.log('User %s just logged in at %s', args.body.username, getDateTime());
             const userToken = jwt.sign({ username }, 'htm-secret');
             args.session.token = userToken;
             res.setHeader('Content-Type', 'application/json');
@@ -32,7 +34,7 @@ module.exports.authentication = function(args, res, next) {
             res.end('Bad login', {
                 'Content-Type': 'application/json'
             }, 200);
-            console.log('Failed login attempt by user %s', args.query.username, getDateTime());
+            console.log('Failed login attempt by user %s', args.body.username, getDateTime());
         }
 
         // otherwise we can determine why we failed
@@ -58,7 +60,7 @@ module.exports.findUser = function(args, res, next) {
         // Compare passwords
         user.comparePassword(password, function(err, isMatch) {
             if (err) throw err;
-            console.log('Password is a match? ', isMatch); 
+            console.log('Password is a match? ', isMatch);
         });
     });
 };
@@ -66,14 +68,14 @@ module.exports.findUser = function(args, res, next) {
 function verifyToken(token) {
     try {
         const decoded = jwt.verify(token, 'htm-secret');
-    } 
+    }
     catch(err) {
         console.log(err);
     }
 }
 
 function getDateTime() {
-    
+
     let date = new Date();
 
     let hour = date.getHours();
@@ -93,5 +95,5 @@ function getDateTime() {
     let day  = date.getDate();
     day = (day < 10 ? "0" : "") + day;
 
-    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec; 
+    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
 }

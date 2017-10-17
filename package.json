@@ -4,7 +4,7 @@
   "description": "API backend for our system",
   "main": "index.js",
   "scripts": {
-    "start-debug": "DEBUG=swagger-tools* ./node_modules/.bin/babel-node src/server.js", 
+    "start-debug": "DEBUG=swagger-tools* ./node_modules/.bin/babel-node src/server.js",
     "start": "./node_modules/.bin/babel-node src/server.js",
     "test": "test"
   },
@@ -30,6 +30,7 @@
     "connect": "^3.6.5",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
+    "cors": "^2.8.4",
     "hat": "0.0.3",
     "js-yaml": "^3.10.0",
     "jsonwebtoken": "^8.1.0",
