@@ -31,9 +31,8 @@ module.exports.authentication = function(args, res, next) {
             console.log('login success', args.session);
             return;
         } else {
-            res.end('Bad login', {
-                'Content-Type': 'application/json'
-            }, 200);
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({loginFailed: true}));
             console.log('Failed login attempt by user %s', args.body.username, getDateTime());
         }
 

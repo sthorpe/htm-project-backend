@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */ 
+/*jshint esversion: 6 */
 const User = require('../models/users');
 let ObjectId = require('mongodb').ObjectID;
 
@@ -23,14 +23,14 @@ module.exports.findUser = function(username, password) {
 module.exports.createUser = function(args, res, next) {
     // create a user a new user
 
-    const { username, password } = args.query;
+    const { username, password } = args.body;
 
     let userModel = new User({ // jshint ignore:line
         _id:  new ObjectId(),
         username,
         password
     });
-    
+
     // save user to database
     userModel.save(function(err) {
         if (err) throw err;
@@ -42,8 +42,8 @@ module.exports.createUser = function(args, res, next) {
             // Compare passwords
             user.comparePassword(password, function(err, isMatch) {
                 if (err) throw err;
-                console.log('Password is a match? ', isMatch); 
+                console.log('Password is a match? ', isMatch);
             });
         });
-    });    
+    });
 };

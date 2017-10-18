@@ -38,6 +38,58 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/Request"
+  /device:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: devices_controller
+    post:
+      description: Allows authentication on our site
+      operationId: createDevice
+      parameters:
+        - name: device
+          in: body
+          description: Device details to create a new device
+          required: true
+          schema:
+            $ref: "#/definitions/DeviceRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DeviceRequest"
+  /validate-device:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: devices_controller
+    post:
+      description: Allows authentication on our site
+      operationId: enableDevice
+      parameters:
+        - name: device
+          in: body
+          description: Device details to create a new device
+          required: true
+          schema:
+            $ref: "#/definitions/DeviceRequest"
+      responses:
+        "200":
+          description: Success
+  /devices:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: devices_controller
+    get:
+      description: Allows a authenticated user to get devices
+      operationId: findDevices
+      parameters:
+        - name: device
+          in: body
+          description: Return all devices in our system
+          required: true
+          schema:
+            $ref: "#/definitions/QueryDeviceRequest"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/QueryDeviceRequest"
   /user:
     x-swagger-router-controller: users_controller
     post:
@@ -63,4 +115,22 @@ definitions:
       username:
         type: string
       password:
+        type: string
+  DeviceRequest:
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+  QueryDeviceRequest:
+    properties:
+      deviceId:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      status:
         type: string
