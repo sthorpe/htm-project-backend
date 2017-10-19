@@ -10,11 +10,9 @@ module.exports.authentication = function(args, res, next) {
      **/
 
     const { username, password } = args.body;
-    console.log(args);
 
     User.getAuthenticated(username, password, function(err, user, reason) {
         if (err) throw err;
-        console.log(user);
         // login was successful if we have a user
         if (user) {
             // handle login success

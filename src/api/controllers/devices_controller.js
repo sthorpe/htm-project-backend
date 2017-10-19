@@ -43,7 +43,7 @@ module.exports.enableDevice = function(args, res, next) {
       }else{
         device.status = status;
         device.save();
-        res.setHeader('Content-Type', 'application/json');
+        //res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({'updated': 'true'}));
       }
     });

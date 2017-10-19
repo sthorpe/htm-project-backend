@@ -23,7 +23,7 @@ module.exports.findUser = function(username, password) {
 module.exports.createUser = function(args, res, next) {
     // create a user a new user
 
-    const { username, password } = args.body;
+    const { username, password } = args.query;
 
     let userModel = new User({ // jshint ignore:line
         _id:  new ObjectId(),

@@ -68,10 +68,12 @@ paths:
           description: Device details to create a new device
           required: true
           schema:
-            $ref: "#/definitions/DeviceRequest"
+            $ref: "#/definitions/ValidateDeviceRequest"
       responses:
         "200":
           description: Success
+          schema:
+            $ref: "#/definitions/ValidateDeviceRequest"
   /devices:
     # binds a127 app logic to a route
     x-swagger-router-controller: devices_controller
@@ -131,6 +133,12 @@ definitions:
       name:
         type: string
       description:
+        type: string
+      status:
+        type: string
+  ValidateDeviceRequest:
+    properties:
+      deviceId:
         type: string
       status:
         type: string
